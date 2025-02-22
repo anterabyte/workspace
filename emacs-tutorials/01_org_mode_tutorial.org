@@ -1,0 +1,137 @@
+
+#+title: Org - Mode Tutorial
+#+date: 19-12-2024
+#+author: utkarsh singh
+
+
+* Some necessary KEY-bindings
+
+- Use tab to close and open a heading/sub-heading and its content but it can close only current heading where cursor is. it also works on the content like this I writing. Ex - if I press return and enter new line and type something there I can press tab on the previous line and it will fold close and open the content accordingly.
+- Use shift+tab to close/collapse and reopen all the main headings ( * ) .
+  Also shift+tab has 3 phases -
+  - Complete collapse (No heading and No content)
+  - Partial Open (Only Heading No Content)
+  - Complete Open (With full content and Heading)
+- Instead of writing a star to create a new heading use ctrl+enter and alt+enter -
+  - Use ctrl+enter to create a same level / indentation heading below the content and the heading (Place the cursor on the heading or end of the heading).
+  - Use alt+enter to create a same level / indentation heading just below the heading but if there is content in the previous heading it will become content of new heading.
+- On a new line have single space between * and cursor and press shift+tab it will current single star into double star.
+- Use alt+arrow (Up and Down) to move the heading around go above its same level of heading to re-organize content (its content will move also), but if you are using it for lower level heading it won't go above its superior heading.
+  Also use alt+arrow (left and right) to increase or decrease the level of heding or indentation of heading (* to ** or ***, or **** ) progressively. 
+                      
+* First Header (like <H1>)
+
+some content
+
+** Sub Heading ( like <h2> )
+
+some more content
+
+* Second Heading
+
+- putiing a * around a word (without a space between word and \* ) will make it bold
+  Ex - *hello*
+
+- Use org-insert-link command from command-centre(M-x) to insert a link at a certain word or sentence. U can provide a description aroud a link in the buffer or you can select a text phrase to work with.
+  And use org-open-at-point command to open that link in your browser u just have to have cursor upon that link.
+- To create a table use | then write table heading -
+
+  Ex -
+
+  Note - 
+
+  I am adding - in front of table is to make table visible or after render it will look like a table 
+
+
+  - You can add new heading | next to the 1st heading to create a new column and can continue to do so, then at last press tab at the last heading to complete table and add new row.
+  
+  - | table | ddree |
+  - |       |       |
+  
+  - Every time you press tab it cycle through each block of table and at the the last block if you press tab it will create a new row similiar to the no. of heading.
+
+  - Also if you enter a word which is long enough for the current table block you can press tab to align whole table for the new word.
+
+  - |     1 | 2 |
+  - | hello |   |
+  - |       |   |
+
+  - Also you can use |- to create a outline around the row or table.
+
+  - |-------|
+  - | hello |
+  - |-------|
+  - |       |
+
+  See this -
+  
+  - |-------+-------+--------|
+  - | hello | world | myself |
+
+
+- Use ( - ) to create a new bullet point, and also can use
+
+  1. hello (press alt+enter to automatically create a new bullet point 2. or new -)
+
+  2. 
+
+- Check box (press alt+shift+enter to create new checkbox)
+
+  Ex -
+
+  - [ ] (Press C-c+C-x+C-b) to check and uncheck the box.
+
+- Source code blocks
+
+  Ex -
+  
+  Syntax for how to write code in org-mode :- 
+
+  #+begin_src name_of_programming_language (python, elisp (emacs-lisp), go etc. )
+
+    code
+    
+  #+end_src
+
+
+  #+begin_src go
+
+    package main
+
+    import "fmt"
+
+    func main() {
+
+	    fmt.Println("Hello world)
+    }
+
+  #+end_src
+
+
+  #+begin_src python :results output
+
+    x = 5
+
+    for i in range(5):
+	if i % 2 == 0:
+	    print(i)
+
+  #+end_src
+  
+- Emacs in default only supports two states - TODO and DONE, well as the words say TODO means this one is in working or pending and DONE means done.
+
+  If you wanna initiate this state -
+
+  write TODO in front of any level of heading.
+
+  Ex  -
+  
+* TODO Hello
+* DONE HELLO
+
+As you can see there are 2 states that have their own colour representation, you can change state of any topic here, u can also change the state by pressing <shift+right/left_arrow_keys> but put the cursor at the end of respecting heading.
+
+Also u can use org-todo command (c-c + c-t) to acheive the same toggle as explain above.
+
+
+

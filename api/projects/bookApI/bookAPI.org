@@ -1,0 +1,53 @@
+
+#+title: basic API bookAPI
+#+author: Utkarsh Singh
+
+* Book List API
+
+BookList Api is project that focus on following points -
+
+#+begin_quote
+
+- Create entry for the book and its info in the builtin BookDb.
+- Fetch all books, fetch books by their author, fetch books by thier id in the Inbuild Database (BookDb). 
+- Delete all books, entry, delete books by thier IDs.
+  
+#+end_quote
+
+*** But what is BookDb?
+
+Well BookDb is a simple relatinal db which strore each book with a assign ID which can also act as Unique Key to fetch the particular book.
+
+
+Structure of Book like this that will store info about each book strored -
+
+#+begin_src go
+
+  type Book struct {
+	  ID int
+	  Name string
+	  Author string
+	  Date time.Time
+  }
+  
+#+end_src
+
+The endpoint to perform the cretae, fetch and delete operations are -
+
+#+begin_quote
+
+| method | enpoint      | action                                          |
+| POST   | /book        | Create a new entry for new book                 |
+| GET    | /book        | Get all Books                                   |
+| GET    | /book/{id}   | Get book with the particular id                 |
+| GET    | /book/author | Get the list of books with the mentioned author |
+| DELETE | /book        | Delete all books                                |
+| DELETE | /book/{id}   | Delete a book by its ID                         |
+
+#+end_quote
+
+
+Note:-
+
+In future there will be authorization and authentication will be implemented in the api so there will be different access level for the manager and customer.
+
