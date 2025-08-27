@@ -45,6 +45,6 @@ func main() {
 
 	fmt.Println("Goroutines", runtime.NumGoroutine())
 
-	fmt.Println(count)
+	fmt.Println("Count final value",count)
 	
 }

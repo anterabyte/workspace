@@ -1,0 +1,159 @@
+#+TITLE: Introduction to scaling
+#+AUTHOR: UTKARSH SINGH
+
+* Scaling
+
+Scaling in computer simply means increase the number of content provider resources due to increase in demand. In monolithic server means increasing resources and memory to serve the load better. Now there can be 2 methods of scaling workload-
+
+- Horizontal - Adding more servers to handle load
+- Vertical - Increasing cpus and memory of a server to handle more load. Now this method was not good if choose this method first to scale the server you have to take down the application serving to the customer first and then scale. Not good.  
+  
+* Scaling in Kubernetes and Container orchestration
+
+Now in similiar pattern with introduction to k8s and containerization there is influx of microservice too, which also introduces a architecture.
+
+- Underlying hardware
+- Resources consumed by workloads (pods in case of k8s)
+
+  So in need of scaling we can have scale 2 different architecture -
+
+  - Scale underlying Infrastructure
+  - Scale resources consumed by workloads
+
+Similiar to above scaling can be happen in 2 ways horizontal and vertical, Lets see how we can scale our 2 different entities.
+
+** Scale cluster infrastructure
+
+Horizontal - Increasing more number of nodes or servers, with the help of cloud architecture it can be achived easily.
+
+Now cluster architecture scaling can be done in 2 ways -
+
+- Manual - (If your cluster is created using kubeadm)
+
+  #+begin_src shell
+    kubeadm join ...
+  #+end_src
+
+- Automatic - Use inbuilt cluster autoscaler
+
+  Note - Vertical scaling simply can be achived by increasing cpus and memory of nodes but we have to drain the node and transfer the workload the newly created better nodes
+
+** Scale workloads
+
+Horizontal - Increase the number of pods and workloads.
+
+- Manually -
+
+  #+begin_src shell
+  kubectl scale ..
+  #+end_src
+
+- Automatic -
+
+  Use Horizontal Pod Autoscaler
+
+Vertically - Increase the number of resources used by pods
+
+- Manual -
+
+  Edit the resources and request of pod to increase the limit.
+  
+  #+begin_src shell
+    kubectl edit pods/<pod-name>
+  #+end_src
+
+- Automatic -
+
+  Use Vertical Pod Autoscaler
+
+* Horizontal Pod Autoscaler (HPA)
+
+As discussed above we can horizontal scale worloads 2 different ways -
+
+- Manually:
+  #+begin_src bash
+    kubectl scale deployement/<name> --replicas 3
+  #+end_src
+
+- Automatic:
+
+  Using HPA (horizontal pod autoscaler)
+
+  Imagine we want to scale this deployement
+  #+begin_src yaml
+
+    apiVersion: apps/v1
+    kind: Deployement
+    metadata:
+      name: my-application
+    spec:
+      replicas: 2
+      selector:
+        matchLabels:
+          app: be
+      template:
+        spec:
+          metadata:
+            labels:
+              app: be
+          containers:
+            - name: img1
+              image: nginx
+              resources:
+                requests:
+                  cpu: 250m
+                limits:
+                  cpu: 500m
+  #+end_src
+
+  Since this deployement has pods which requires min 250m CPUs and 500m max which we can provide, means if there is any increase in traffic we have to scale up the workloads we have seen manual way now how to do it automatically -
+
+  #+begin_src bash
+    kubectl autoscale deployement/<name> --cpu-percent=50 --min 1 --max 10
+  #+end_src
+
+  Now this command will create hpa which will monitor your workload, --cpu-percentage is what hpa will look at, This percentage is against the limit resources if pod pass the limit hpa will increase the pods and decrease the pods if there is no extra workload there, hpa will do all of this work with the help of metric server.
+  --min and --max is the number of pods hpa will increase or decrease upto. You can check your pod usage by using -
+
+  #+begin_src bash
+    kubectl top pods
+  #+end_src
+
+  To view the hpa
+
+  #+begin_src bash
+    kubectl get hpa
+  #+end_src
+
+  To delete hpa
+
+  #+begin_src bash
+    kubectl delete hpa
+  #+end_src
+
+  Now using config file
+
+  #+begin_src yaml
+
+    apiversion: autoscaling/v2
+    kind: HorizontalPodAutoScaler
+    metadata:
+      name: hpa1
+    spec:
+      scaleTargetRef:
+        apiversion: apps/v1
+        kind: Deployement
+        name: my-application
+      minReplicas: 1
+      maxReplicas: 10
+      metrics:
+        - type: Resource
+          resource:
+            name: cpu
+            target:
+              type: Utilization
+              averageUtilization: 50
+  #+end_src
+
+* Vertical Pod Autoscaler (VPA)
+

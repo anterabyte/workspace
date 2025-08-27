@@ -216,5 +216,5 @@ Then run -
 
   # then upgrade the kubeadm and kubelet then reload the daemon and kubelet
   systemctl daemon-reload
-  systemctl restart ubelet
+  systemctl restart kubelet
 #+end_src

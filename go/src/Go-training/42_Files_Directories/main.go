@@ -17,7 +17,7 @@ func main() {
 	check(err)
 	
 	// Delete directory at the end (Similiar to rm -rf)
-	// defer os.RemoveAll("MyDir")
+	defer os.RemoveAll("MyDir")
 
 	// Create a helper function to create a file
 	createmptyFile := func(name string) {

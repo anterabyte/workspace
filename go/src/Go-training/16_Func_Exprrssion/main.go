@@ -13,9 +13,17 @@ func main() {
 
 	x := foo()
 
+	x1 := foo
+
+	x1()
+
 	fmt.Println(x)
 
 	y := bar()
+
+	y1 := bar
+
+	y1()
 
 	fmt.Println(y())
 
@@ -23,9 +31,15 @@ func main() {
 
 	z()
 
+	z1 := cat
+
+	z1()
+
 	fmt.Printf("%T\t%T\t%T\n",x,y,z)
 
 	fmt.Printf("%T\t%T\t%T\n", foo, bar, y)
+
+	fmt.Printf("%T\t%T\t%T\n", x1,y1,z1)
 }
 
 func foo() int{

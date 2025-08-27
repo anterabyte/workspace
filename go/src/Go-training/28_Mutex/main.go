@@ -20,7 +20,7 @@ func main() {
 
 	var wg sync.WaitGroup
 
-	wg.Add(30)
+	wg.Add(gs)
 
 	var mu sync.Mutex
 
@@ -51,6 +51,6 @@ func main() {
 
 	fmt.Println("Final No. of Goroutines", runtime.NumGoroutine())
 
-	fmt.Println(count)
+	fmt.Println("Count final value",count)
 	
 }

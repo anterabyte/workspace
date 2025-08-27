@@ -30,9 +30,11 @@ func main() {
 
 	bs := []byte(s)
 
-	ps := person{
-		{"jason", 34, "no"},
-	}
+	//ps := person{
+	//	{"jason", 34, "no"},
+	//}
+
+	ps := person{}
 
 	err := json.Unmarshal(bs, &ps)
 	if err != nil {
