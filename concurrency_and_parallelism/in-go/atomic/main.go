@@ -17,7 +17,7 @@ func main() {
 
 	var counter int64 
 	
-	fmt.Println("Current number of CPUS is", runtime.NumCPU(), "and Current number of Goroutines is",runtime.NumGoroutine())
+	fmt.Println(" Current number of CPUS is", runtime.NumCPU(), "and Current number of Goroutines is",runtime.NumGoroutine())
 
 	wg.Add(gs)
 

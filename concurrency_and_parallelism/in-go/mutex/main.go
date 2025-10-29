@@ -43,7 +43,7 @@ func main() {
 
 	wg.Wait()
 
-	fmt.Printf("Current counter count is %d\n",counter)
+	fmt.Printf("Final counter count is %d\n",counter)
 	
 	fmt.Println("Launched 100 Goroutines")
 

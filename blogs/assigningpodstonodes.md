@@ -1,8 +1,9 @@
 
 Practical - Report:- 
-<h1> Methods to Assign Pods to Nodes </h1>
 
-```
+# Methods to Assign Pods to Nodes 
+
+```text
 Some of the terms to keep in remember if you are reading this guide - 
 
 - Topology - Set of a worker nodes in an zone, rezions or any user defined terms. You can can also create in your local environment using any minikube, kubeadm or kind. topologykey is a key of label that is assigned to a node, Ex. If we are talkikg about zones a set of nodes gonna have similiar labels like zone: zone1, another set of nodes in other zone gonna have label zone2.
@@ -11,33 +12,31 @@ Some of the terms to keep in remember if you are reading this guide -
 ```
 
 
-<h2> Inter-pod-affinity / pod-affinity - </h2>
+## Inter-pod-affinity / pod-affinity - 
 
 podAffinity depends on scheduled pods labels present on the node and also on labels on node or set of nodes also known as _topologykey_, these constraints will determine if current pod is gonna scheduled on the node or not. If the current pod already scheduled on the node has a similiar label as one on upcoming pod using podAffinity , the upcoming pod will schedule in the nodes with topologyKey mention in the upcoming Pods podspec. Now on the basis of if kube-scheduler wanna shedule or not these two methods will be most important -
 
-1- requiredDuringSchedulingIgnoredDuringExecution - It is necessary to new pod to follow the rule of podAffinity or kube-scheduler will not schedule the new pod.
+1 - requiredDuringSchedulingIgnoredDuringExecution - It is necessary to new pod to follow the rule of podAffinity or kube-scheduler will not schedule the new pod.
 
-2- preferredDuringSchedulingIgnoredDuringExecution - kube-scheduler will try to follow the podAffinity rule but if required it will try to schedule pod.
+2 - preferredDuringSchedulingIgnoredDuringExecution - kube-scheduler will try to follow the podAffinity rule but if required it will try to schedule pod.
 
 Remember even if you can schedule the pod , it will always be schedule on a one topologydomain , New pod will always schedule on the any node among set of nodes on a single topologydomain. Conversely, if there are no Pods with similiar labels as pod scheduled in Zone , the scheduler will not assign the example Pod to any node in that zone.
 
 
-<h2> Inter-pod-anti-affinity / pod-AntiAffinity - </h2>
+## Inter-pod-anti-affinity / pod-AntiAffinity - 
 
 Same as podaffinity, podAntiAffinity depends on scheduled pods labels present on the node and also on labels on node or set of nodes also known as _topologykey_, these constraints will determine if current pod is gonna scheduled on the node or not.But unlike podAffinity, podAntiAffinity will not schedule on that topologyDomain where these pods with similiar label as mention under labelSelector. Similarly like podAffinity ,Now on the basis of if kube-scheduler wanna shedule or not these two terms will be most important -
 
-1- requiredDuringSchedulingIgnoredDuringExecution - It is necessary to new pod to follow the rule of podAffinity or kube-scheduler will not schedule the new pod.
+1 - requiredDuringSchedulingIgnoredDuringExecution - It is necessary to new pod to follow the rule of podAffinity or kube-scheduler will not schedule the new pod.
 
-2- preferredDuringSchedulingIgnoredDuringExecution - kube-scheduler will try to follow the podAffinity rule but if required it will try to schedule pod.
+2 - preferredDuringSchedulingIgnoredDuringExecution - kube-scheduler will try to follow the podAffinity rule but if required it will try to schedule pod.
 
 Conversely, the anti-affinity rule does not impact scheduling into Zone if there are no Pods with with similar labels are available.
-
-
 
 > Note - If no node with label key mentioned under both podaffinity and podAntiAffinity is avialable in that no pod can scheduled, and pod will be in pending state.
 
 
-<h3> podTopologySpread -  </h3>
+### podTopologySpread -  
 
 Control how pods/ workloads are spread across cluster among topologydomain such as regions, zones, nodes, and other user-defined topology domains.
 

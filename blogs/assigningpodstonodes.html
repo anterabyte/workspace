@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>assigningpodstonodes.html</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+
+</head>
+
+<body>
+
+<p>Practical - Report:-</p>
+
+<h1 id="methodstoassignpodstonodes">Methods to Assign Pods to Nodes</h1>
+
+<pre><code>Some of the terms to keep in remember if you are reading this guide - 
+
+- Topology - Set of a worker nodes in an zone, rezions or any user defined terms. You can can also create in your local environment using any minikube, kubeadm or kind. topologykey is a key of label that is assigned to a node, Ex. If we are talkikg about zones a set of nodes gonna have similiar labels like zone: zone1, another set of nodes in other zone gonna have label zone2.
+
+- maxSkew - Maximum differnce between no. of pods between 2  topology domain ( remember topology domain depends on level means on the level of node, zone or regions) , Ex - On level of zone suppose there are 3 zones z1, z2, z3 and nodes on z1 are 3, z2 are 2, z3 are 1 then maximum differnce = 2, which is between zone1 (max no. of nodes) and zone3 (min no. of nodes), so maxskew will be 2. 
+</code></pre>
+
+<h2 id="inter-pod-affinitypod-affinity-">Inter-pod-affinity / pod-affinity -</h2>
+
+<p>podAffinity depends on scheduled pods labels present on the node and also on labels on node or set of nodes also known as <em>topologykey</em>, these constraints will determine if current pod is gonna scheduled on the node or not. If the current pod already scheduled on the node has a similiar label as one on upcoming pod using podAffinity , the upcoming pod will schedule in the nodes with topologyKey mention in the upcoming Pods podspec. Now on the basis of if kube-scheduler wanna shedule or not these two methods will be most important -</p>
+
+<p>1 - requiredDuringSchedulingIgnoredDuringExecution - It is necessary to new pod to follow the rule of podAffinity or kube-scheduler will not schedule the new pod.</p>
+
+<p>2 - preferredDuringSchedulingIgnoredDuringExecution - kube-scheduler will try to follow the podAffinity rule but if required it will try to schedule pod.</p>
+
+<p>Remember even if you can schedule the pod , it will always be schedule on a one topologydomain , New pod will always schedule on the any node among set of nodes on a single topologydomain. Conversely, if there are no Pods with similiar labels as pod scheduled in Zone , the scheduler will not assign the example Pod to any node in that zone.</p>
+
+<h2 id="inter-pod-anti-affinitypod-antiaffinity-">Inter-pod-anti-affinity / pod-AntiAffinity -</h2>
+
+<p>Same as podaffinity, podAntiAffinity depends on scheduled pods labels present on the node and also on labels on node or set of nodes also known as <em>topologykey</em>, these constraints will determine if current pod is gonna scheduled on the node or not.But unlike podAffinity, podAntiAffinity will not schedule on that topologyDomain where these pods with similiar label as mention under labelSelector. Similarly like podAffinity ,Now on the basis of if kube-scheduler wanna shedule or not these two terms will be most important -</p>
+
+<p>1 - requiredDuringSchedulingIgnoredDuringExecution - It is necessary to new pod to follow the rule of podAffinity or kube-scheduler will not schedule the new pod.</p>
+
+<p>2 - preferredDuringSchedulingIgnoredDuringExecution - kube-scheduler will try to follow the podAffinity rule but if required it will try to schedule pod.</p>
+
+<p>Conversely, the anti-affinity rule does not impact scheduling into Zone if there are no Pods with with similar labels are available.</p>
+
+<blockquote>
+<p>Note - If no node with label key mentioned under both podaffinity and podAntiAffinity is avialable in that no pod can scheduled, and pod will be in pending state.</p>
+</blockquote>
+
+<h3 id="podtopologyspread-">podTopologySpread -</h3>
+
+<p>Control how pods/ workloads are spread across cluster among topologydomain such as regions, zones, nodes, and other user-defined topology domains.</p>
+
+<p>It is somewhat differnt from both podAffinity and podAntiAffinity, it can shedule on an empty nodes (topologykey mention under pods podspec should match the nodes) even if there is is labelSelector is mentioned under podspec, Unlike podaffinity where no matching pods can not a schedule a new pod, here labelSelector is used to find matching Pods. Pods that match this label selector are counted to determine the number of Pods in their corresponding topology domain. Unlike podAffinity all pods are not spread in a single topologyDomain, the pods are distributed across different topologyDomain, because here pods label are only used for counting number of pods in their topologyDomain and spread is moredue to maxSkew mentioned under podspec.</p>
+
+<p>maxSkew will determine the pod spread by -</p>
+
+<ul>
+<li><p>if you select <code>whenUnsatisfiable: DoNotSchedule</code>, then maxSkew defines the maximum permitted difference between the number of matching pods in the target topology and the global minimum (the minimum number of matching pods in an eligible domain or zero if the number of eligible domains is less than MinDomains). For example, if you have 3 zones with 2, 2 and 1 matching pods respectively, MaxSkew is set to 1 then the global minimum is 1.</p></li>
+<li><p>if you select <code>whenUnsatisfiable: ScheduleAnyway</code>, the scheduler gives higher precedence to topologies that would help reduce the skew.</p></li>
+</ul>
+
+<blockquote>
+<p>whenUnsatisfiable: DoNotSchedule and whenUnsatisfiable: ScheduleAnyway are constraints of podTopologySpread.</p>
+</blockquote>
+
+</body>
+</html>
